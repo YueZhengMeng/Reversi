@@ -1,0 +1,24 @@
+from flask import Flask, render_template
+from flask_sock import Sock
+
+app = Flask(__name__)
+sock = Sock(app)
+
+
+@app.route('/')
+def index():
+    print(Flask.env)
+    return render_template('index.html')
+
+
+@sock.route('/echo')
+def echo(sock):
+    while True:
+        data = sock.receive()
+        sock.send(data)
+
+
+if __name__ == '__main__':
+    app = Flask(__name__)
+    sock.init_app(app)
+    app.run()
